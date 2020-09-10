@@ -4,6 +4,9 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 	<display-name>webStudy01</display-name>
+	<welcome-file-list>
+		<welcome-file>index.do</welcome-file>
+	</welcome-file-list>
 	<context-param>
 		<param-name>testParam</param-name>
 		<param-value>paramValue</param-value>
@@ -13,8 +16,8 @@
 		<param-value>e:/contents</param-value>
 	</context-param>
 	<servlet>
-		<servlet-name>DescrptionServlet</servlet-name>
-		<servlet-class>kr.or.ddit.servlet01.DescrptionServlet</servlet-class>
+		<servlet-name>DescriptionServlet</servlet-name>
+		<servlet-class>kr.or.ddit.servlet01.DescriptionServlet</servlet-class>
 		<init-param>
 			<param-name>initName</param-name>
 			<param-value>/eclipse.ini</param-value>
@@ -22,7 +25,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>DescrptionServlet</servlet-name>
+		<servlet-name>DescriptionServlet</servlet-name>
 		<url-pattern>/desc.do</url-pattern>
 	</servlet-mapping>
 	<servlet>

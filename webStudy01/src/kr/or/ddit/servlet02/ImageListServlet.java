@@ -3,16 +3,19 @@ package kr.or.ddit.servlet02;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.ddit.utils.CookieUtils;
 import kr.or.ddit.utils.TemplateUtils;
 
 public class ImageListServlet extends HttpServlet {
@@ -44,6 +47,11 @@ public class ImageListServlet extends HttpServlet {
 			
 			return accept;
 		});
+		
+		CookieUtils cookieUtils = new CookieUtils(req);
+		if (cookieUtils.exists("imgCookie")) {
+			req.setAttribute("imgCookie", cookieUtils.getCookie("imgCookie"));
+		}
 		
 		req.setAttribute("listFiles", listFiles);
 		req.setAttribute("includePage", "/WEB-INF/views/imageView.jsp");
