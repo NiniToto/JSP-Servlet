@@ -11,12 +11,13 @@ import kr.or.ddit.vo.MemberVO;
 
 public class MemberServiceImpl implements IMemberService{
 
-	private IMemberDAO dao = MemberDAOImpl.getInstance();
+	private IMemberDAO dao;
 	private IAuthenticateService authenticateService;
 	
 	private static MemberServiceImpl self;
 	
 	private MemberServiceImpl() {
+		dao = MemberDAOImpl.getInstance();
 		authenticateService = AuthenticateServiceImpl.getInstance();
 	}
 	
