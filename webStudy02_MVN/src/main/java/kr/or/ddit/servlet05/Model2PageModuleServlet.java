@@ -44,6 +44,7 @@ public class Model2PageModuleServlet extends HttpServlet{
 						.menuURI("/image/imageList.do")
 						.build());
 		
+		
 		private MenuVO menuVO;
 
 		private ServiceType(MenuVO menuVO) {
