@@ -2,10 +2,10 @@
  * 
  */
 	$.fn.zipSearch=function(){
+		
 		var zipArea = this;
-		var timer = null;
-		var timerJob = null;
 		var div1 = null;
+		
 		function makeZipArea(){
 			let modalHeader = $("<div>").addClass("modal-header").append($("<h5>").text("주소 검색"));
 			let infoTag = $("<p>").text("검색할 주소를 입력해주세요!");
@@ -25,18 +25,25 @@
 				, tabindex :"-1"
 			}).append($("<div>").addClass("modal-dialog").append(modalContent));
 			
+			zipArea.after(div1);
+			
 			div1.modal({show:false});
-			$("#msgArea").modal("show");
 			
 			let clickHandler = function(){
 				let id = this.id;
 				if(id=="yesBtn"){
-					init();
+					searchZip();
 				}
 				div1.modal("hide");
 			}; 
 			yesBtn.on("click", clickHandler);
 			noBtn.on("click", clickHandler);
+		}
+		function searchZip(){
+			
+		}
+		function init(){
+			
 		}
 		makeZipArea();
 		return this;

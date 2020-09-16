@@ -102,7 +102,6 @@
 					$(table).DataTable( {
 				        "pagingType": "full_numbers"
 				    } );
-					
 				},
 				error : function(errResp) {
 					console.log(errResp);
@@ -116,16 +115,12 @@
 			let gugunVal = $(this).find(".guguntd").text();
 			let dongVal = $(this).find(".dongtd").text();
 			
-			$("[name = mem_zip]").val(zipVal);
-			$("[name = mem_add1]").val(sidoVal+ " " +gugunVal+ " " + dongVal);
+			$("[name = 'mem_zip']").val(zipVal);
+			$("[name = 'mem_add1']").val(sidoVal+ " " +gugunVal+ " " + dongVal); 
 			
 			$("#msgArea").modal("hide");
 		});
-		
-		$(document).on("click", ".selectZip", function(){
-			
-		})
-		
+				
 		$("#noBtn").on("click", function(){
 			$("#msgArea").modal("hide");
 		});
@@ -134,7 +129,7 @@
 	String message = (String) request.getAttribute("message");
 			if (StringUtils.isNotBlank(message)) {
 	%>
-	    	//alert("<%=message%>);
+<%-- 	    	alert("<%=message%>); --%>
 	");
 <%}%>
 	});
