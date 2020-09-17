@@ -38,8 +38,8 @@ public class MemberVO implements Serializable {
 	@NotBlank(groups= {Default.class, DeleteGroup.class})
 	@Size(max = 15, groups= {Default.class, DeleteGroup.class})
 	private String mem_pass;
-	@NotBlank
-	@Size(max = 20)
+	@NotBlank(groups=InsertGroup.class)
+	@Size(max = 20, groups=InsertGroup.class)
 	private String mem_name;
 	@NotBlank(groups=InsertGroup.class)
 	@Size(max = 6, groups=InsertGroup.class)

@@ -17,7 +17,7 @@ import kr.or.ddit.vo.ZipVO;
 import kr.or.ddit.zip.service.IZipService;
 import kr.or.ddit.zip.service.ZipServiceImpl;
 
-@WebServlet("/zipSearch.do")
+@WebServlet("/zipSearch2.do")
 public class ZipSearchController extends HttpServlet{
 
 	private IZipService service = ZipServiceImpl.getInstance();

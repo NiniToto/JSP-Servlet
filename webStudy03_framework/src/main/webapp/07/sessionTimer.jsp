@@ -28,8 +28,7 @@
 <!-- 	연장을 선택하면, 타이머가 2분으로 리셋. -->
 <!-- 	연장하지 않겠다면, 타이머는 0:0 순간 멈춤. -->
 <script type="text/javascript">
-
-	$("#timeArea").sessionTimer(<%=session.getMaxInactiveInterval() %>);
+$("#timeArea").sessionTimer(<%=session.getMaxInactiveInterval() %>);
 	
 </script>
 

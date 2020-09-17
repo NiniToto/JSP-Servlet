@@ -57,14 +57,45 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public ServiceResult modifyMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return null;
+		Object result = authService.authenticate(member);
+		ServiceResult serviceResult = null;
+		if(result instanceof MemberVO) {
+			int rowcnt = memberDAO.updateMember(member);
+			if(rowcnt>0) {
+				serviceResult = ServiceResult.OK;
+			}else {
+				serviceResult = ServiceResult.FAILED;
+			}
+		}else {
+			if(ServiceResult.NOTEXIST.equals(result)) {
+				throw new CustomException(member.getMem_id()+"는 회원이 아님.");
+			}else {
+				serviceResult = (ServiceResult) result;
+			}
+		}
+		return serviceResult;
 	}
 
 	@Override
 	public ServiceResult removeMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return null;
+		Object result = authService.authenticate(member);
+		ServiceResult serviceResult = null;
+		if(result instanceof MemberVO) {
+			int rowCnt = memberDAO.deleteMember(member.getMem_id());
+			
+			if(rowCnt > 0) {
+				serviceResult = ServiceResult.OK;
+			}else {
+				serviceResult = ServiceResult.FAILED;
+			}
+		}else {
+			if(ServiceResult.NOTEXIST.equals(result)) {
+				throw new CustomException(member.getMem_id()+"는 회원이 아님.");
+			}else {
+				serviceResult = (ServiceResult) result;
+			}
+		}
+		return serviceResult;
 	}
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.commons.dao.IZipCodeSearchDAO">
+ 	<select id="selectZipcodeList" parameterType="string" resultType="kr.or.ddit.vo.ZipCodeVO">
+ 		SELECT                            
+		    ZIPCODE,    SIDO,    GUGUN,   
+		    DONG,    RI,    BLDG,         
+		    BUNJI,    SEQ                 
+		FROM   ZIPTB                      
+		WHERE SIDO LIKE '%'||#{noname}||'%'    
+			OR GUGUN LIKE '%'||#{noname}||'%'  
+			OR DONG LIKE '%'||#{noname}||'%'   
+			OR RI LIKE '%'||#{noname}||'%'     
+			OR BLDG LIKE '%'||#{noname}||'%'   
+ 	</select>
+</mapper>

@@ -5,29 +5,28 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp"></jsp:include>
-<style type = "text/css">
+<jsp:include page="/includee/preScript.jsp" />
+<style type="text/css">
 	div{
-		border : 1px solid black;
+		border: 1px solid black;
 	}
 </style>
 <script type="text/javascript">
 	$(function(){
-		var middle = $("#middle").on("click", "#inner" function(event){
+		var middle = $("#middle").on("click", "#inner", function(event){
 			event.stopPropagation();
 			alert(this.id);
 		});
 		$("#addBtn, #removeBtn").on("click", function(){
 			let cmd = this.id;
-			if(cmd == "addBtn"){
+			if(cmd=="addBtn"){
 				let newDiv = $("<div>").prop("id", "inner").text("안쪽 영역");
 				$("#middle").append(newDiv);
-			}else if(cmd == "removeBtn"){
+			}else if(cmd=="removeBtn"){
 				inner.remove();
 			}
 		});
 	});
-	
 </script>
 </head>
 <body>
@@ -36,16 +35,26 @@
 	event.preventDefault(); : 이벤트 자체를 중단시킴.
 	event.stopPropagation(); : 이벤트 전파 중단(bubbling, capturing)
 </pre>
-<button id = "removeBtn">div 없애기</button>
-<button id = "addBtn">div 만들기</button>
-<div id = "outer">
-	바깥 영역
-	<div id = "middle">
+<button id="removeBtn">div 없애기 </button>
+<button id="addBtn">div 만들기 </button>
+<div id="outer">
+	바깥영역
+	<div id="middle">
 		중간 영역
-			<div id = "inner">
-				안쪽 영역
-			</div>
+		<div id="inner">
+			안쪽 영역
+		</div>
 	</div>
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
