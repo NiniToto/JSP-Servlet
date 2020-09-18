@@ -3,16 +3,38 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.commons.dao.IZipCodeSearchDAO">
- 	<select id="selectZipcodeList" parameterType="string" resultType="kr.or.ddit.vo.ZipCodeVO">
- 		SELECT                            
+
+	<sql id="searchFrag">
+		<where>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchWord)">
+					SIDO LIKE '%'||#{searchWord}||'%'    
+					OR GUGUN LIKE '%'||#{searchWord}||'%'  
+					OR DONG LIKE '%'||#{searchWord}||'%'   
+					OR RI LIKE '%'||#{searchWord}||'%'     
+					OR BLDG LIKE '%'||#{searchWord}||'%'
+			</if>
+		</where>
+	</sql>
+	
+	<select id = "selectTotalCount" parameterType="PagingVO" resultType="int">
+		SELECT COUNT(*)
+		FROM ZIPTB
+		<include refid="searchFrag"></include>
+	</select>
+
+ 	<select id="selectZipcodeList" parameterType="PagingVO" resultType="kr.or.ddit.vo.ZipCodeVO">
+ 		
+ 		SELECT A.*
+ 		FROM
+ 		(SELECT   ROWNUM RNUM,                         
 		    ZIPCODE,    SIDO,    GUGUN,   
 		    DONG,    RI,    BLDG,         
 		    BUNJI,    SEQ                 
 		FROM   ZIPTB                      
-		WHERE SIDO LIKE '%'||#{noname}||'%'    
-			OR GUGUN LIKE '%'||#{noname}||'%'  
-			OR DONG LIKE '%'||#{noname}||'%'   
-			OR RI LIKE '%'||#{noname}||'%'     
-			OR BLDG LIKE '%'||#{noname}||'%'   
+		<include refid="searchFrag"></include>
+		) A
+		<![CDATA[
+			WHERE RNUM >= #{startRow} AND RNUM <= #{endRow}
+		]]>   
  	</select>
 </mapper>

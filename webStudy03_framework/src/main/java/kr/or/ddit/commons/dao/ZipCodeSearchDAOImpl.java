@@ -13,6 +13,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.db.ConnectionFactory;
 import kr.or.ddit.db.CustomSqlSessionFactoryBuilder;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ZipCodeVO;
 
 public class ZipCodeSearchDAOImpl implements IZipCodeSearchDAO {
@@ -31,11 +32,21 @@ public class ZipCodeSearchDAOImpl implements IZipCodeSearchDAO {
 	private SqlSessionFactory sqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory(); 
 
 	@Override
-	public List<ZipCodeVO> selectZipcodeList(String keyword) {
+	public int selectTotalCount(PagingVO pagingVO) {
+		try(
+			SqlSession session = sqlSessionFactory.openSession();
+		){
+			IZipCodeSearchDAO mapper = session.getMapper(IZipCodeSearchDAO.class);
+			return mapper.selectTotalCount(pagingVO);
+		}
+	}
+	
+	@Override
+	public List<ZipCodeVO> selectZipcodeList(PagingVO pagingVO) {
 		try(
 			SqlSession session = sqlSessionFactory.openSession();
 		){		
-			return session.selectList("kr.or.ddit.commons.dao.IZipCodeSearchDAO.selectZipcodeList", keyword);
+			return session.selectList("kr.or.ddit.commons.dao.IZipCodeSearchDAO.selectZipcodeList", pagingVO);
 		}
 	}
 
