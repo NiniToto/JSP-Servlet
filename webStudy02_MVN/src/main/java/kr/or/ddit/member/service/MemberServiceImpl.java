@@ -5,6 +5,7 @@ import java.util.List;
 import kr.or.ddit.commons.service.AuthenticateServiceImpl;
 import kr.or.ddit.commons.service.IAuthenticateService;
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
@@ -30,37 +31,45 @@ public class MemberServiceImpl implements IMemberService{
 	
 	@Override
 	public ServiceResult registMember(MemberVO member) {
-		int chk = dao.insertMember(member);
-		ServiceResult result;
-		if(chk > 0) {
-			result = ServiceResult.OK;
+		ServiceResult result = null;
+		if(dao.selectMember(member.getMem_id()) == null) {
+			int chk = dao.insertMember(member);
+			if(chk > 0) {
+				result = ServiceResult.OK;
+			}else {
+				result = ServiceResult.FAILED;
+			}
 		}else {
-			result = ServiceResult.FAILED;
+			result = ServiceResult.PKDUPLICATED;
 		}
 		return result;
 	}
 
 	@Override
 	public List<MemberVO> retrieveMemberList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public MemberVO retrieveMember(String mem_id) {
-		// TODO Auto-generated method stub
-		return null;
+		MemberVO member = new MemberVO();
+		
+		member = dao.selectMember(mem_id);
+		
+		if(member == null) {
+			throw new CustomException(mem_id + "는 존재하지 않는 회원임");
+		}
+		
+		return member;
 	}
 
 	@Override
 	public ServiceResult modifyMember(MemberVO member) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ServiceResult removeMember(MemberVO member) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

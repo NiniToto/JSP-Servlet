@@ -21,11 +21,7 @@ import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/login/loginProcess.do")
 public class LoginProcessServlet extends HttpServlet{
-	private IAuthenticateService service;
-	
-	private LoginProcessServlet() {
-		service = AuthenticateServiceImpl.getInstance();
-	}
+	private IAuthenticateService service = AuthenticateServiceImpl.getInstance();
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

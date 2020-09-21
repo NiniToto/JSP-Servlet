@@ -19,22 +19,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.ddit.commons.dao.IZipCodeSearchDAO;
 import kr.or.ddit.commons.dao.ZipCodeSearchDAOImpl;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
 import kr.or.ddit.vo.ZipCodeVO;
 
 @WebServlet("/searchZip.do")
 public class ZipTBController extends HttpServlet{
-
+	
 	IZipCodeSearchDAO dao = ZipCodeSearchDAOImpl.getInstance();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		req.setCharacterEncoding("UTF-8");
-		
 		String pageParam = req.getParameter("page");
 		PagingVO<ZipCodeVO> pagingVO = new PagingVO<>();
-		
-		pagingVO.setSearchWord(req.getParameter("searchWord"));
+		SearchVO searchVO = new SearchVO();
+		searchVO.setSearchWord(req.getParameter("searchWord"));
+		pagingVO.setSearchVO(searchVO);
 		int totalRecord = dao.selectTotalCount(pagingVO);
 		pagingVO.setTotalRecord(totalRecord);
 		int currentPage = 1;
@@ -42,17 +42,33 @@ public class ZipTBController extends HttpServlet{
 			currentPage = Integer.parseInt(pageParam);
 		}
 		pagingVO.setCurrentPage(currentPage);
-		
 		List<ZipCodeVO> zipList = dao.selectZipcodeList(pagingVO);
 		pagingVO.setData(zipList);
 		
 		resp.setContentType("application/json;charset=UTF-8");
-		
 		try(
-			PrintWriter out = resp.getWriter();
+			PrintWriter out = resp.getWriter();	
 		){
-			ObjectMapper mapper =new ObjectMapper();
+			ObjectMapper mapper = new ObjectMapper();
 			mapper.writeValue(out, pagingVO);
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

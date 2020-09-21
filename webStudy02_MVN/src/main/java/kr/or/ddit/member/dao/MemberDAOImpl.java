@@ -2,6 +2,7 @@ package kr.or.ddit.member.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,11 +38,11 @@ public class MemberDAOImpl implements IMemberDAO {
 		sql.append("	    mem_delete                                        ");
 		sql.append("	) VALUES (                                            ");
 		sql.append("	    ?,    ?,    ?,                           		  ");
-		sql.append("	    ?,    ?,    ?,                              	  ");
+		sql.append("	    ?,    ?,    to_date( ?, 'YYYY-MM-DD'),            ");
 		sql.append("	    ?,    ?,    ?,                              	  ");
 		sql.append("	    ?,    ?,    ?,                            		  ");
 		sql.append("	    ?,    ?,    ?,                           		  ");
-		sql.append("	    ?,    ?,    ?,                           		  ");
+		sql.append("	    ?,    to_date( ?, 'YYYY-MM-DD'),    ?,     		  ");
 		sql.append("	    ?)                                 	          	  ");
 		
 		try(
@@ -84,7 +85,45 @@ public class MemberDAOImpl implements IMemberDAO {
 
 	@Override
 	public MemberVO selectMember(String mem_id) {
-		return null;
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT                                                 ");
+	    sql.append(" MEM_ID,    MEM_PASS,    MEM_NAME,                      ");
+	    sql.append(" MEM_REGNO1,    MEM_REGNO2,    TO_CHAR(MEM_BIR, 'YYYY-MM-DD') MEM_BIR,");
+	    sql.append(" MEM_ZIP,    MEM_ADD1,    MEM_ADD2,                     ");
+	    sql.append(" MEM_HOMETEL,    MEM_COMTEL,    MEM_HP,                 ");
+	    sql.append(" MEM_MAIL,    MEM_JOB,    MEM_LIKE,                     ");
+	    sql.append(" MEM_MEMORIAL,    TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') MEM_MEMORIALDAY,    MEM_MILEAGE,      ");
+	    sql.append(" MEM_DELETE                                             ");
+	    sql.append(" FROM    MEMBER                                         ");
+	    sql.append(" WHERE MEM_ID = ? ");
+
+	    MemberVO savedMember = null;
+		try(
+			Connection conn = ConnectionFactory.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.setString(1, mem_id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				 savedMember = MemberVO.builder()
+						 .mem_id(rs.getString("mem_id"))
+						 .mem_pass(rs.getString("mem_pass"))
+						 .mem_name(rs.getString("mem_name"))
+						 .mem_name(rs.getString("MEM_REGNO1"))
+						 .mem_name(rs.getString("MEM_REGNO2"))
+						 .mem_name(rs.getString("MEM_BIR"))
+						 .mem_name(rs.getString("MEM_ZIP"))
+						 .mem_name(rs.getString("MEM_ADD1"))
+						 .mem_name(rs.getString("MEM_ADD2"))
+						 .mem_name(rs.getString("MEM_HOMETEL"))
+						 .mem_name(rs.getString("MEM_COMTEL"))
+						 .mem_name(rs.getString("MEM_HP"))
+						 .build();
+			}
+			return savedMember;
+		}catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

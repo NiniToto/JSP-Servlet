@@ -1,6 +1,6 @@
 package kr.or.ddit.vo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -20,25 +20,23 @@ import org.junit.Test;
 
 import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
+import kr.or.ddit.validate.InsertGroup;
 
 public class MemberVOValidationTest {
-	
+
 	private IMemberDAO dao;
 	private static Validator validator;
-
+	
 	@BeforeClass
 	public static void setUpClass() {
-		
-		//vaildatorFactory에서 
 		ValidatorFactory factory = Validation.byDefaultProvider()
-						.configure()
-						.messageInterpolator(
-								new ResourceBundleMessageInterpolator(
-												new PlatformResourceBundleLocator("kr.or.ddit.msgs.CustomValidationMessage")
-								)
-						)
-						.buildValidatorFactory();
-						
+					.configure()
+					.messageInterpolator(
+							new ResourceBundleMessageInterpolator(
+									new PlatformResourceBundleLocator("kr.or.ddit.msgs.CustomValidationMessage")
+							)
+					)
+					.buildValidatorFactory();
 		validator = factory.getValidator();
 	}
 	
@@ -47,33 +45,50 @@ public class MemberVOValidationTest {
 		dao = MemberDAOImpl.getInstance();
 		System.out.println("before");
 	}
-	
+
 //	@Test
 	public void test() {
-		MemberVO member = dao.selectMember("aasdasdasd");
+		MemberVO member = dao.selectMember("afasdf01");
 		assertNull(member);
 	}
 	
 	@Test
 	public void memberValidationTest() {
 		MemberVO member = MemberVO.builder()
-								.mem_id("asdasdasd")	
-								.mem_pass("a")
-								.build();
-		Set<ConstraintViolation<MemberVO>> errorSet = validator.validate(member);
+						.mem_hp("afasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf")
+						.build();
+		Set<ConstraintViolation<MemberVO>> errorSet = 
+					validator.validate(member, InsertGroup.class);
 		System.out.println(errorSet.size());
-		for(ConstraintViolation<MemberVO> violation : errorSet) {
-			Path propertyPath =  violation.getPropertyPath();
+		for( ConstraintViolation<MemberVO> violation : errorSet) {
+			Path propertyPath = violation.getPropertyPath();
 			String message = violation.getMessage();
-			System.out.printf("%s : %s \n", propertyPath, message);
+			System.out.printf("%s : %s\n", propertyPath, message);
 		}
 	}
 	
 //	@Test
 	public void resourceBundleTest() {
 		String baseName = "org.hibernate.validator.ValidationMessages";
-		ResourceBundle bundle = ResourceBundle.getBundle(baseName, Locale.ENGLISH);
-		String message = bundle.getString("");
+		ResourceBundle bundle = ResourceBundle.getBundle(baseName, Locale.JAPANESE);
+		String message = bundle.getString("javax.validation.constraints.AssertFalse.message");
 		System.out.println(message);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

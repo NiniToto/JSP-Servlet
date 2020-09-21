@@ -51,6 +51,25 @@ public class MemberRegistController extends HttpServlet {
 		}
 		System.out.println(member);
 
+//		-- reflection 코드 --
+//	        
+//	        for (Entry<String, String[]> entry : paramMap.entrySet()) { String paramName
+//	        = entry.getKey(); String[] paramValue = entry.getValue();
+//	        
+//	        Class<?> clzType = member.getClass(); try { Field field =
+//	        clzType.getDeclaredField(paramName); field.setAccessible(true);
+//	        
+//	        Class<?> fieldType = field.getType(); if
+//	        (String.class.isAssignableFrom(fieldType)) { field.set(member,
+//	        paramValue[0]); } else if (Number.class.isAssignableFrom(fieldType)) { Number
+//	        number = (Number) fieldType.newInstance(); Method method =
+//	        fieldType.getDeclaredMethod("parseInt", String.class); number = (Number)
+//	        method.invoke(number, paramValue[0]); field.set(member, number); }
+//	        
+//	        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+//	        | IllegalAccessException | InstantiationException | InvocationTargetException
+//	        | NoSuchMethodException e) { continue; } }
+		
 //		2. 검증(DB 스키마 구조 참고)
 		Map<String, StringBuffer> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);

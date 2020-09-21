@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.ddit.commons.dao.IZipCodeSearchDAO;
 import kr.or.ddit.commons.dao.ZipCodeSearchDAOImpl;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
 import kr.or.ddit.vo.ZipCodeVO;
 
 @WebServlet("/zipSearch.do")
@@ -24,11 +25,10 @@ public class ZipCodeSearchController extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String keyword = req.getParameter("keyword");
-		
-		PagingVO pagingVO = new PagingVO();
-		
-		pagingVO.setSearchWord(req.getParameter("dong"));
-		
+		PagingVO<ZipCodeVO> pagingVO = new PagingVO<>();
+		SearchVO searchVO = new SearchVO();
+		searchVO.setSearchWord(keyword);
+		pagingVO.setSearchVO(searchVO);
 		List<ZipCodeVO> zipCodeList = searchDAO.selectZipcodeList(pagingVO);
 		resp.setContentType("application/json;charset=UTF-8");
 		ObjectMapper mapper = new ObjectMapper();

@@ -44,7 +44,6 @@ public class Model2PageModuleServlet extends HttpServlet{
 						.menuURI("/image/imageList.do")
 						.build());
 		
-		
 		private MenuVO menuVO;
 
 		private ServiceType(MenuVO menuVO) {
@@ -59,8 +58,10 @@ public class Model2PageModuleServlet extends HttpServlet{
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String serviceParam = req.getParameter("service");
+		
 		int sc = 200;
 		String includePage = "/WEB-INF/views/index.jsp";
+		
 		if(StringUtils.isNotBlank(serviceParam)) {
 			try {
 				ServiceType serviceType = ServiceType.valueOf(serviceParam);
@@ -77,7 +78,7 @@ public class Model2PageModuleServlet extends HttpServlet{
 		if(sc==200) {
 			req.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(req, resp);
 		}else {
-			resp.sendError(404, "제공하지 않는 서비스");;
+			resp.sendError(404, "제공하지 않는 서비스");
 		}
 	}
 }

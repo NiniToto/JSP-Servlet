@@ -34,7 +34,7 @@ public class ZipCodeSearchDAOImpl implements IZipCodeSearchDAO {
 	@Override
 	public int selectTotalCount(PagingVO pagingVO) {
 		try(
-			SqlSession session = sqlSessionFactory.openSession();
+			SqlSession session = sqlSessionFactory.openSession();	
 		){
 			IZipCodeSearchDAO mapper = session.getMapper(IZipCodeSearchDAO.class);
 			return mapper.selectTotalCount(pagingVO);

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.ddit.commons.dao.IZipCodeSearchDAO;
 import kr.or.ddit.commons.dao.ZipCodeSearchDAOImpl;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
 import kr.or.ddit.vo.ZipCodeVO;
 import kr.or.ddit.zip.service.IZipService;
 import kr.or.ddit.zip.service.ZipServiceImpl;
@@ -53,7 +54,9 @@ public class ZipDataTableController extends HttpServlet{
 		int totalRecordNonSearch = dao.selectTotalCount(pagingVO);
 		
 		//검색 후 레코드 수
-		pagingVO.setSearchWord(searchWord);
+		SearchVO searchVO = new SearchVO();
+		searchVO.setSearchWord(searchWord);
+		pagingVO.setSearchVO(searchVO);
 		int totalRecord = dao.selectTotalCount(pagingVO);
 				
 		pagingVO.setTotalRecord(totalRecord);
@@ -78,7 +81,5 @@ public class ZipDataTableController extends HttpServlet{
 			ObjectMapper mapper =new ObjectMapper();
 			mapper.writeValue(out, target);
 		}
-		
-		
 	}
 }
