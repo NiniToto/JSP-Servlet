@@ -7,5 +7,6 @@ import kr.or.ddit.vo.ProdVO;
  *
  */
 public interface IProdDAO {
+	public int insertProd(ProdVO prod);
 	public ProdVO selectProd(String prod_id);
 }

@@ -16,6 +16,7 @@ public class MemberDAOImplTest {
 	IMemberDAO dao;
 	MemberVO testMember;
 	PagingVO<MemberVO> pagingVO;
+	
 	@Before
 	public void setUp() throws Exception {
 		dao = MemberDAOImpl.getInstance();

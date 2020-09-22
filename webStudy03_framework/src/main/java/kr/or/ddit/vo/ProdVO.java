@@ -6,14 +6,22 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import kr.or.ddit.validate.UpdateGroup;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(of= {"prod_id"})
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProdVO implements Serializable{
-	@NotBlank
-	@Size(max = 10)
+	
+	@NotBlank(groups = UpdateGroup.class)
+	@Size(max = 10, groups = UpdateGroup.class)
 	private String prod_id;
 	@NotBlank
 	@Size(max = 40)
@@ -21,6 +29,7 @@ public class ProdVO implements Serializable{
 	@NotBlank
 	@Size(max = 4)
 	private String prod_lgu;
+	private String lprod_nm;
 	@NotBlank
 	@Size(max = 6)
 	private String prod_buyer;
@@ -55,7 +64,7 @@ public class ProdVO implements Serializable{
 	private Integer prod_qtysale;
 	private Integer prod_mileage;
 	
-//	private BuyerVO buyer; // Prod has a Buyer 관계(1:1 관계 조인시 모델)
+	private BuyerVO buyer; // Prod has a Buyer 관계(1:1 관계 조인시 모델)
 	
 	private List<MemberVO> memberList; // 구매자 목록, Prod has many Member
 }

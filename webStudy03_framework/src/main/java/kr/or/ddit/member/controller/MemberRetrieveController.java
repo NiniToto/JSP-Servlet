@@ -16,19 +16,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.annotation.CommandHandler;
+import kr.or.ddit.mvc.annotation.HttpMethod;
+import kr.or.ddit.mvc.annotation.URIMapping;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.SearchVO;
 import kr.or.ddit.vo.ZipCodeVO;
 
-@WebServlet("/member/memberList.do")
-public class MemberListController extends HttpServlet {
+@CommandHandler
+public class MemberRetrieveController {
 	
 	IMemberService service = MemberServiceImpl.getInstance();
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
+	@URIMapping(value = "/member/memberView.do", method = HttpMethod.GET)
+	public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String who = req.getParameter("who");
+		if(StringUtils.isBlank(who)) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "필수 파라미터 누락");
+			return null;
+		}
+		
+		MemberVO member = service.retrieveMember(who);
+		req.setAttribute("member", member);
+		String goPage = "member/memberView";
+		return goPage;
+	}
+	
+	@URIMapping(value = "/member/memberList.do", method = HttpMethod.GET)
+	public String dasdf(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		String pageParam = req.getParameter("page");
 //		====검색
 		String searchType = req.getParameter("searchType");
@@ -57,10 +74,11 @@ public class MemberListController extends HttpServlet {
 					){
 				mapper.writeValue(out, pagingVO);
 			}
+			return null;
 		}else {
 			req.setAttribute("pagingVO", pagingVO);
-			String goPage = "/WEB-INF/views/member/memberList.jsp";
-			req.getRequestDispatcher(goPage).forward(req, resp);
+			String goPage = "member/memberList";
+			return goPage;
 		}
 	}
 }
