@@ -1,8 +1,6 @@
-<%@page import="java.util.List"%>
-<%@page import="kr.or.ddit.vo.MemberVO"%>
-<%@page import="kr.or.ddit.vo.PagingVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +9,6 @@
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<%
-	PagingVO<MemberVO> pagingVO =(PagingVO) request.getAttribute("pagingVO");
-%>
 	<table id="memberTable" class="table table-bordered">
 		<thead>
 			<tr>
@@ -26,39 +21,36 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%
-				List<MemberVO> datalist = pagingVO.getData();
-				if(datalist!=null && datalist.size()>0){
-					for(MemberVO member : datalist){
-						%>
+			<c:set var="datalist" value="${pagingVO.data }" />
+			<c:choose>
+				<c:when test="${not empty datalist }">
+					<c:forEach items="${datalist }" var="member">
 						<tr>
-							<td><%=member.getMem_id() %></td>
-							<td><a href="#" data-who="<%=member.getMem_id()%>"><%=member.getMem_name() %></a></td>
-							<td><%=member.getMem_hp() %></td>
-							<td><%=member.getMem_mail() %></td>
-							<td><%=member.getMem_add1() %></td>
-							<td><%=member.getMem_mileage() %></td>
+							<td>${member.mem_id}</td>
+							<td><a href="#" data-who="${member.mem_id}">${member.mem_name}</a></td>
+							<td>${member.mem_hp}</td>
+							<td>${member.mem_mail}</td>
+							<td>${member.mem_add1}</td>
+							<td>${member.mem_mileage}</td>
 						</tr>
-						<%
-					}
-				}else{
-					%>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
 					<tr>
 						<td colspan="6">검색 조건에 맞는 회원이 없음.</td>
 					</tr>
-					<%
-				}
-			%>
+				</c:otherwise>
+			</c:choose>
 		</tbody>
 		<tfoot>
 			<tr>
 				<td colspan="6" id="pagingArea">
-					<%=pagingVO.getPagingHTML_BS() %>
+					${pagingVO.pagingHTML_BS}
 				</td>
 			</tr>
 		</tfoot>
 	</table>
-<form id="searchForm" action="<%=request.getContextPath()%>/member/memberList.do" class="form-inline">
+<form id="searchForm" action="${pageContext.request.contextPath}/member/memberList.do" class="form-inline">
 	<input type="hidden" name="page" />
 	<select name='searchType' class="form-control">
 		<option value="all">전체</option>
@@ -143,7 +135,7 @@
 		let who = $(this).data("who"); 
 <%-- 		location.href="<%=request.getContextPath() %>/member/memberView.do?who="+who; --%>
 		$.ajax({
-			url : "<%=request.getContextPath() %>/member/memberView.do",
+			url : "${pageContext.request.contextPath}/member/memberView.do",
 			method : "get",
 			data : {
 				who:who
@@ -163,12 +155,3 @@
 </script>	
 </body>
 </html>
-
-
-
-
-
-
-
-
-
