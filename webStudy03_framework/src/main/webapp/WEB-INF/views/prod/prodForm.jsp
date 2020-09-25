@@ -1,6 +1,6 @@
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.Set"%>
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.Map"%>
+<%@page import="kr.or.ddit.vo.BuyerVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -10,10 +10,30 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<script type="text/javascript">
+<%
+	String message = (String)request.getAttribute("message");
+	if(StringUtils.isNotBlank(message)){
+		%>
+			alert("<%=message %>");
+		<%
+	}
+%>
+	$(function(){
+		let prod_lguTag = $("[name='prod_lgu']").on("click", function(){
+			let lgu = $(this).val();
+			console.log(prod_buyerTag);
+			prod_buyerTag.find("option").hide();
+			prod_buyerTag.find("option:first").show();
+			prod_buyerTag.find("option."+lgu).show();
+		}).val("${prod.prod_lgu}");
+		let prod_buyerTag = $("[name='prod_buyer']").val("${prod.prod_buyer}");
+	});
+</script>
 </head>
 <body>
 <jsp:useBean id="errors" class="java.util.LinkedHashMap" scope="request"/>
-	<form method="post">
+	<form method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<th>상품코드</th>
@@ -39,30 +59,19 @@
 				<th>상품분류</th>
 				<td>
 					<div class="form-group form-inline">
-						<input class="form-control mr-2" type="text" required name="prod_lgu"
-							value="${prod.prod_lgu }" maxLength="4" />
-							<select>
+<!-- 						<input class="form-control mr-2" type="text" required name="prod_lgu" -->
+<%-- 							value="${prod.prod_lgu }" maxLength="4" /> --%>
+						<select class="form-control" name="prod_lgu">
+							<option value>상품분류</option>
 							<%
-							String pattern = "<option value = %s>%s</option>";
-							
-							List<Map<String, Object>> list = (List)request.getAttribute("lprodList");
-							if(list.size()>0){
-								for(int i = 0; i < list.size(); i++){
-									Map<String, Object> map = list.get(i);
-									Set<String> keySet = map.keySet();
-									Iterator<String> it =  keySet.iterator();
-									
-									while(it.hasNext()){
-										String key = it.next();
-										Object value = map.get(key);
-										out.println(String.format(pattern, key, value));
-									}
+								List<Map<String,Object>> lprodList = (List) request.getAttribute("lprodList");
+								for(Map<String,Object> lprod : lprodList){
+									%>
+									<option value="<%=lprod.get("lprod_gu") %>"><%=lprod.get("lprod_nm") %></option>
+									<%
 								}
-							}else{
-								out.println("<option value = ''>상품분류없음</option>");
-							}
 							%>
-							</select>
+						</select>
 						<span class="error"><%=errors.get("prod_lgu") %></span>
 					</div>
 				</td>
@@ -71,8 +80,19 @@
 				<th>거래처코드</th>
 				<td>
 					<div class="form-group form-inline">
-						<input class="form-control mr-2" type="text" required name="prod_buyer"
-							value="${prod.prod_buyer }" maxLength="6" />
+<!-- 						<input class="form-control mr-2" type="text" required name="prod_buyer" -->
+<%-- 							value="${prod.prod_buyer }" maxLength="6" /> --%>
+						<select class="form-control" name="prod_buyer">
+							<option value>거래처</option>
+							<%
+								List<BuyerVO> buyerList = (List) request.getAttribute("buyerList");
+								for(BuyerVO buyer : buyerList){
+									%>
+									<option value="<%=buyer.getBuyer_id()%>" class="<%=buyer.getBuyer_lgu()%>"><%=buyer.getBuyer_name() %></option>
+									<%
+								}
+							%>
+						</select>
 						<span class="error"><%=errors.get("prod_buyer") %></span>
 					</div>
 				</td>
@@ -128,11 +148,13 @@
 				</td>
 			</tr>
 			<tr>
-				<th>상품이미지경로</th>
+				<th>상품이미지</th>
 				<td>
+					<div style="width: 50px;height: 50px;">
+						<img style="width: 100%;height: 100%;" src="<%=request.getContextPath() %>/prodImages/${prod.prod_img }" />
+					</div>
 					<div class="form-group form-inline">
-						<input class="form-control mr-2" type="text" required name="prod_img"
-							value="${prod.prod_img }" maxLength="40" />
+						<input class="form-control mr-2" type="file" name="prod_image" />
 						<span class="error"><%=errors.get("prod_img") %></span>
 					</div>
 				</td>

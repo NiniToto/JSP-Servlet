@@ -6,8 +6,6 @@ import java.util.Map;
 import kr.or.ddit.vo.BuyerVO;
 
 public interface IOthersDAO {
-
 	public List<Map<String, Object>> selectLprodGuList();
-	
-	public BuyerVO selectBuyerList();
+	public List<BuyerVO> selectBuyerList();
 }

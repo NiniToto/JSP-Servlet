@@ -5,10 +5,8 @@
 		SELECT LPROD_GU "lprod_gu", LPROD_NM "lprod_nm"
 		FROM LPROD
 	</select>
-
 	<select id="selectBuyerList" resultType="BuyerVO">
 		SELECT BUYER_NAME, BUYER_ID, BUYER_LGU
 		FROM BUYER
 	</select>
-	
 </mapper>

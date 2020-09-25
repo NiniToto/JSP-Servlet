@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.prod.dao.IProdDAO">
+
 	<resultMap type="ProdVO" id="prodMap" autoMapping="true">
 		<id property="prod_id" column="PROD_ID"/>
 		<association property="buyer" javaType="BuyerVO" autoMapping="true" />
 		<collection property="memberList" ofType="MemberVO" autoMapping="true"/>
 	</resultMap>
+	
 	<select id="selectProd" parameterType="string" resultMap="prodMap">
 		WITH CARTVIEW AS (
 		    SELECT DISTINCT CART_MEMBER, CART_PROD
@@ -54,13 +56,71 @@
 		    #{prod_qtysale,jdbcType=NUMERIC},  #{prod_mileage,jdbcType=NUMERIC}
 		)
 	</insert>
+	
+	<sql id="searchFrag">
+		<trim prefix=" WHERE " prefixOverrides="AND">
+			<if test="searchDetail neq null">
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchDetail.prod_name)">
+				AND	PROD_NAME LIKE '%'||#{searchDetail.prod_name}||'%'
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchDetail.prod_lgu)">
+				AND	PROD_LGU =#{searchDetail.prod_lgu}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchDetail.prod_buyer)">
+				AND	PROD_BUYER =#{searchDetail.prod_buyer}
+				</if>
+			</if>
+		</trim>	
+	</sql>
+	
+	<select id="selectProdCount" parameterType="PagingVO" resultType="int">
+		SELECT COUNT(*)
+		FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+						INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+		<include refid="searchFrag" />
+	</select>
+	
+	<select id="selectProdList" parameterType="PagingVO" resultType="ProdVO">
+		SELECT A.*, BUYER_NAME "buyer.buyer_name"
+		FROM (
+			SELECT ROWNUM RNUM 
+				, PROD_ID, PROD_NAME, PROD_LGU, PROD_BUYER
+				, PROD_COST, PROD_PRICE, PROD_SALE
+				, LPROD_NM
+				, BUYER_NAME 
+			FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+						INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+			<include refid="searchFrag" />			
+		) A	
+		WHERE RNUM BETWEEN #{startRow} AND #{endRow}			
+	</select>
+	
+	<update id="updateProd" parameterType="ProdVO">
+		UPDATE PROD
+		
+		SET
+		
+		PROD_NAME =#{PROD_NAME,jdbcType=VARCHAR},
+		PROD_COST =#{PROD_COST,jdbcType=NUMERIC},
+		PROD_PRICE =#{PROD_PRICE,jdbcType=NUMERIC},
+		PROD_SALE = #{PROD_SALE,jdbcType=NUMERIC},
+		PROD_OUTLINE = #{PROD_OUTLINE,jdbcType=VARCHAR},
+		PROD_DETAIL = #{PROD_DETAIL,jdbcType=CLOB},
+		PROD_TOTALSTOCK = #{PROD_TOTALSTOCK,jdbcType=NUMERIC},
+		PROD_INSDATE = SYSDATE,
+		PROD_PROPERSTOCK = #{PROD_PROPERSTOCK,jdbcType=NUMERIC},
+		PROD_SIZE = #{PROD_SIZE,jdbcType=VARCHAR},
+		PROD_COLOR = #{PROD_COLOR,jdbcType=VARCHAR},
+		PROD_DELIVERY = #{PROD_DELIVERY,jdbcType=VARCHAR},
+		PROD_UNIT = #{PROD_UNIT,jdbcType=VARCHAR},
+		PROD_QTYIN = #{PROD_QTYIN,jdbcType=NUMERIC},
+		PROD_QTYSALE = #{PROD_QTYSALE,jdbcType=NUMERIC},
+		PROD_MILEAGE = #{PROD_MILEAGE,jdbcType=NUMERIC}
+		
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(prod_img)">
+		, PROD_IMG = #{PROD_IMG,jdbcType=VARCHAR}
+		</if>
+		
+		WHERE PROD_ID = #{PROD_ID, jdbcType=VARCHAR}
+	</update>
 </mapper>
-
-
-
-
-
-
-
-
-

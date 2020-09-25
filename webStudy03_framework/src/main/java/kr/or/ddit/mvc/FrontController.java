@@ -14,13 +14,10 @@ import kr.or.ddit.mvc.annotation.IHandlerInvoker;
 import kr.or.ddit.mvc.annotation.IHandlerMapper;
 import kr.or.ddit.mvc.annotation.URIMappingInfo;
 
-
 public class FrontController extends HttpServlet{
-	
 	private IHandlerMapper handlerMapper;
 	private IHandlerInvoker handlerInvoker;
-	private ViewProcessor viewProcessor;
-	
+	private IViewProcessor viewProcessor;
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -33,23 +30,40 @@ public class FrontController extends HttpServlet{
 		viewProcessor.setPrefix(prefix);
 		viewProcessor.setSuffix(suffix);
 	}
-
+	
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
+	protected void service(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
 		URIMappingInfo mappingInfo = handlerMapper.findCommandHandler(req);
-		if(mappingInfo == null) {
+		if(mappingInfo==null) {
 			String tmpURI = req.getRequestURI();
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND, tmpURI + " 는 제공하지 않는 서비스입니다.");
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, tmpURI+" 는 제공하지 않는 서비스입니다.");
 			return;
 		}
 		String viewName = handlerInvoker.invokeHandler(mappingInfo, req, resp);
-		if(viewName != null) {
+		if(viewName!=null) {
 			viewProcessor.viewProcess(viewName, req, resp);
 		}else {
 			if(!resp.isCommitted()) {
-				resp.sendError(500, "뷰네임이 누락되었음");
+				resp.sendError(500, "뷰네임이 누락되었음.");
 			}
 		}
 	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

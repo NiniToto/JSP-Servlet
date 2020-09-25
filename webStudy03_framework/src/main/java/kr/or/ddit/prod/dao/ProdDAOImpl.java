@@ -1,10 +1,13 @@
 package kr.or.ddit.prod.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.db.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.member.dao.IMemberDAO;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdDAOImpl implements IProdDAO {
@@ -23,22 +26,34 @@ public class ProdDAOImpl implements IProdDAO {
 	}
 	
 	@Override
-	public int insertProd(ProdVO prod) {
+	public int insertProd(ProdVO prod, SqlSession session) {
+				
+		return session.insert("kr.or.ddit.prod.dao.IProdDAO.insertProd", prod);	
+		
+	}
+
+	@Override
+	public int selectProdCount(PagingVO<ProdVO> pagingVO) {
 		try(
-			SqlSession session = sqlSessionFactory.openSession(true);
+			SqlSession session = sqlSessionFactory.openSession();
 		){		
 			IProdDAO mapper = session.getMapper(IProdDAO.class);
-			return mapper.insertProd(prod);
+			return mapper.selectProdCount(pagingVO);
 		}
 	}
 
+	@Override
+	public List<ProdVO> selectProdList(PagingVO<ProdVO> pagingVO) {
+		try(
+			SqlSession session = sqlSessionFactory.openSession();
+		){		
+			IProdDAO mapper = session.getMapper(IProdDAO.class);
+			return mapper.selectProdList(pagingVO);
+		}
+	}
+
+	@Override
+	public int updateProd(ProdVO prod, SqlSession session) {
+		return session.insert("kr.or.ddit.prod.dao.IProdDAO.updateProd", prod);
+	}
 }
-
-
-
-
-
-
-
-
-

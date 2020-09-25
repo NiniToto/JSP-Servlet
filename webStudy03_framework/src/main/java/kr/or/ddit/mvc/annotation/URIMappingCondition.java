@@ -1,21 +1,18 @@
 package kr.or.ddit.mvc.annotation;
 
 /**
- * immutable 객체로 정의함
- * @URIMapping과 1:1 관계
+ * immutable 객체로 정의함.
+ * @URIMapping 과 1:1 관계
  *
  */
 public class URIMappingCondition {
-
 	private String url;
 	private HttpMethod method;
-	
 	public URIMappingCondition(String url, HttpMethod method) {
 		super();
 		this.url = url;
 		this.method = method;
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -24,7 +21,6 @@ public class URIMappingCondition {
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -47,15 +43,25 @@ public class URIMappingCondition {
 	public String getUrl() {
 		return url;
 	}
-	
 	public HttpMethod getMethod() {
 		return method;
 	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("%s[%s]", url, method);
 	}
-	
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

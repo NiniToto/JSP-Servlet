@@ -7,11 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface IViewProcessor {
-	
 	public void setPrefix(String prefix);
-	
 	public void setSuffix(String suffix);
-	
-	public void viewProcess(String viewName, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
-	
+	public void viewProcess(String viewName, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 }

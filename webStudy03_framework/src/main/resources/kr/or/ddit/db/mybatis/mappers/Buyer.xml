@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.buyer.dao.IBuyerDAO">
+
 	<resultMap type="BuyerVO" id="buyerMap" autoMapping="true">
 		<id property="buyer_id" column="BUYER_ID"/>
 		<collection property="prodList" ofType="ProdVO" autoMapping="true" />
 	</resultMap>
+	
 	<select id="selectBuyer" parameterType="string" resultMap="buyerMap">
 		WITH BUYERVIEW AS (
 			SELECT
@@ -20,5 +22,11 @@
 		    , PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE
 		    , PROD_SALE, PROD_OUTLINE, PROD_MILEAGE
 		FROM BUYERVIEW LEFT OUTER JOIN PROD ON (BUYER_ID = PROD_BUYER)
+	</select>
+	
+	<select id="selectBuyerForOption" parameterType="String" resultType="BuyerVO">
+		SELECT BUYER_NAME, BUYER_ID, BUYER_LGU
+		FROM BUYER
+		WHERE BUYER_LGU = #{BUYER_LGU}
 	</select>
 </mapper>

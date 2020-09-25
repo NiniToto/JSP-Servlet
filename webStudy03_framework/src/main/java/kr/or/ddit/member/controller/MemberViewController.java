@@ -12,9 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.annotation.CommandHandler;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/member/memberView.do")
+//@WebServlet("/member/memberView.do")
+@CommandHandler
 public class MemberViewController extends HttpServlet{
 	IMemberService service = MemberServiceImpl.getInstance();
 			
@@ -32,12 +34,3 @@ public class MemberViewController extends HttpServlet{
 		req.getRequestDispatcher(goPage).forward(req, resp);
 	}
 }
-
-
-
-
-
-
-
-
-

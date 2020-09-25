@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import kr.or.ddit.filter.wrapper.PartWrapper;
+import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,14 +16,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(of= {"prod_id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of= {"prod_id"})
 public class ProdVO implements Serializable{
-	
-	@NotBlank(groups = UpdateGroup.class)
-	@Size(max = 10, groups = UpdateGroup.class)
+	@NotBlank(groups=UpdateGroup.class)
+	@Size(max = 10, groups=UpdateGroup.class)
 	private String prod_id;
 	@NotBlank
 	@Size(max = 40)
@@ -33,25 +34,25 @@ public class ProdVO implements Serializable{
 	@NotBlank
 	@Size(max = 6)
 	private String prod_buyer;
-	@NotBlank
 	private Integer prod_cost;
-	@NotBlank
 	private Integer prod_price;
-	@NotBlank
 	private Integer prod_sale;
 	@NotBlank
 	@Size(max = 100)
 	private String prod_outline;
 	@Size(max = 4000)
 	private String prod_detail;
-	@NotBlank
-	@Size(max = 40)
-	private String prod_img;
-	@NotBlank
+	@NotBlank(groups=InsertGroup.class)
+	@Size(max = 40, groups=InsertGroup.class)
+	private String prod_img; // 데이터베이스 사용
+	private PartWrapper prod_image; // client data 받기용
+	public void setProd_image(PartWrapper prod_image) {
+		this.prod_image = prod_image;
+		if(prod_image!=null) this.prod_img = prod_image.getSaveName() ;
+	}
 	private Integer prod_totalstock;
 	@Size(max = 7)
 	private String prod_insdate;
-	@NotBlank
 	private Integer prod_properstock;
 	@Size(max = 20)
 	private String prod_size;
