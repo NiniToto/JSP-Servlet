@@ -97,52 +97,50 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:set value="${member.prodList }" var="prodList">
-							<c:if test="${not empty prodList }">
-								<c:forEach items="${prodList }" var="prod">
-									<tr>
-										<td>${prod.prod_id}</td>
-										<c:url value="/prod/prodView.do" var="prodURL">
-											<c:param name="what" value="${prod.prod_id }" />
-										</c:url>
-										<td><a href="${prodURL}">${prod.prod_name}</a></td>
-										<td>${prod.prod_cost}</td>
-										<td>${prod.prod_price}</td>
-										<td>${prod.prod_mileage}</td>
-									</tr>
-								</c:forEach>
-							</c:if>
-							<c:if test="${empty prodList }">
+						<c:set value="${member.prodList }" var="prodList" />
+						<c:if test="${not empty prodList }">
+							<c:forEach items="${prodList }" var="prod">
 								<tr>
-									<td colspan="5">
-										구매 목록이 없음.
-									</td>
+									<td>${prod.prod_id}</td>
+									<c:url value="/prod/prodView.do" var="prodURL">
+										<c:param name="what" value="${prod.prod_id }" />
+									</c:url>
+									<td><a href="${prodURL}">${prod.prod_name}</a></td>
+									<td>${prod.prod_cost}</td>
+									<td>${prod.prod_price}</td>
+									<td>${prod.prod_mileage}</td>
 								</tr>
-							</c:if>
-						</c:set>
-						<c:set value="${member.prodList }" var="prodList">
-							<c:if test="${not empty prodList }">
-								<c:forEach items="${prodList }" var="prod">
-									<tr>
-										<td>${prod.prod_id}</td>
-										<c:url value="/prod/prodView.do" var="prodURL">
-											<c:param name="what" value="${prod.prod_id }" />
-										</c:url>
-										<td><a href="${prodURL }">${prod.prod_name}</a></td>
-										<td>${prod.prod_cost}</td>
-										<td>${prod.prod_price}</td>
-										<td>${prod.prod_mileage}</td>
-									</tr>
-								</c:forEach>
-							</c:if>
-							<c:if test="${empty prodList }">
-								<tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty prodList }">
+							<tr>
 								<td colspan="5">
 									구매 목록이 없음.
 								</td>
-								</tr>
-							</c:if>
-						</c:set>
+							</tr>
+						</c:if>
+<%-- 						<c:set value="${member.prodList }" var="prodList" /> --%>
+<%-- 						<c:if test="${not empty prodList }"> --%>
+<%-- 							<c:forEach items="${prodList }" var="prod"> --%>
+<!-- 								<tr> -->
+<%-- 									<td>${prod.prod_id}</td> --%>
+<%-- 									<c:url value="/prod/prodView.do" var="prodURL"> --%>
+<%-- 										<c:param name="what" value="${prod.prod_id }" /> --%>
+<%-- 									</c:url> --%>
+<%-- 									<td><a href="${prodURL }">${prod.prod_name}</a></td> --%>
+<%-- 									<td>${prod.prod_cost}</td> --%>
+<%-- 									<td>${prod.prod_price}</td> --%>
+<%-- 									<td>${prod.prod_mileage}</td> --%>
+<!-- 								</tr> -->
+<%-- 							</c:forEach> --%>
+<%-- 						</c:if> --%>
+<%-- 						<c:if test="${empty prodList }"> --%>
+<!-- 							<tr> -->
+<!-- 							<td colspan="5"> -->
+<!-- 								구매 목록이 없음. -->
+<!-- 							</td> -->
+<!-- 							</tr> -->
+<%-- 						</c:if> --%>
 					</tbody>			
 				</table>
 			</td>

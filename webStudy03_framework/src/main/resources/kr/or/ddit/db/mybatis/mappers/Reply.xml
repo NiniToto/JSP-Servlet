@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.board.dao.IReplyDAO">
+
+	<sql id="searchFrag">
+		<where>
+			<if test="searchVO neq null and @org.apache.commons.lang3.StringUtils@isNotBlank(searchVO.searchWord)">
+				<if test="">
+					
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectReplyCount" parameterType="PagingVO" resultType="int">
+		SELECT COUNT(*)
+		FROM REPLYJSP
+		<include refid="searchFrag" />
+	</select>
+	
+	<select id="selectReplyList" parameterType="PagingVO" resultType="ReplyVO">
+	SELECT
+	    REP_NO,    BO_NO,    REP_CONTENT,
+	    REP_WRITER,    REP_DATE,    REP_IP,
+	    REP_PASS
+	FROM 
+		REPLYJSP
+		<include refid="searchFrag" />
+	</select>
+
+	<select id="selectReply">
+			
+	</select>
+	
+	<insert id="insertReply">
+		INSERT INTO REPLYJSP (
+		    rep_no,    bo_no,    rep_content,
+		    rep_writer,    rep_date,    rep_ip,
+		    rep_pass
+		) VALUES (
+		    #{rep_no, jdbcType=NUMERIC},	#{bo_no, jdbcType=NUMERIC}, #{rep_content, jdbcType=VARCHAR},
+		    #{rep_writer, jdbcType=VARCHAR}, #{rep_date, jdbcType=DATE}, #{rep_ip, jdbcType=VARCHAR},
+		    #{rep_pass, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateReply" parameterType="ReplyVO">
+		
+		UPDATE REPLYJSP
+	    SET
+	        rep_no = #{rep_no, jdbcType = NUMERIC},
+		    bo_no = #{bo_no, jdbcType = NUMERIC},
+		    rep_content = #{rep_content, jdbcType = VARCHAR},
+		    rep_writer = #{rep_wirter, jdbcType = VARCHAR},
+		    rep_date = #{rep_date, jdbcType = DATE},
+		    rep_ip = #{rep_ip, jdbcType = VARCHAR},
+		    rep_pass = #{rep_pass, jdbcType = VARCHAR}
+		    
+		WHERE rep_no = #{rep_no, jdbcType = NUMERIC}
+		    
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		DELETE FROM replyjsp
+		WHERE rep_no = #{rep_no}
+	</delete>
+
+</mapper>
