@@ -29,7 +29,7 @@
 		</repository>
 	</repositories>
 	<dependencies>
-		<!-- 서블릿 스펙의 기본 의존성 주입 디펜던시-->
+		<!-- 서블릿 스펙의 기본 의존성 주입 디펜던시  -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
